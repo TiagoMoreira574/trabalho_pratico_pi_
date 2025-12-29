@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="trabalho_pratico_pi/trabalho_pratico_pi.vcxproj" Id="fd477975-ae2b-4732-a343-4416fca0c925" />
+</Solution>
