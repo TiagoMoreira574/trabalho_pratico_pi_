@@ -202,7 +202,7 @@ int findNearestFreeCell(char board[ROWS][COLS], int targetRow, int targetCol, in
     return 0;
 }
 
-int moveUnit(Unit* u, int destRow, int destCol) {
+int moveUnit(Unit *u, int destRow, int destCol) {
     int distance, movementCost, * playerCoins, finalRow, finalCol;
 
     if (u->owner == UNIT_OWNER_PLAYER1) {

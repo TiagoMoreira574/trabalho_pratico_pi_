@@ -10,35 +10,6 @@
 #include "ai.h"
 #include "globals.h"
 
-void displayStatistics(void) {
-    clearScreen();
-
-    printBoxTop();
-    printBoxEmpty();
-    printBoxCenter("G A M E   S T A T I S T I C S");
-    printBoxEmpty();
-    printBoxSeparator();
-
-    char line[80];
-    int p1Kills = countDestroyedEntities(g_player1Kills);
-    int p2Kills = countDestroyedEntities(g_player2Kills);
-
-    sprintf(line, "%s - Total Kills: %d", g_player1.name, p1Kills);
-    printBoxCenter(line);
-    printBoxEmpty();
-    displayDestroyedList(g_player1Kills, 0);
-
-    printBoxSeparator();
-
-    sprintf(line, "%s - Total Kills: %d", g_player2.name, p2Kills);
-    printBoxCenter(line);
-    printBoxEmpty();
-    displayDestroyedList(g_player2Kills, 1);
-
-    printBoxBottom();
-    waitForEnter();
-}
-
 void runGameLoop(int startingPlayer) {
     int gameRunning = 1, turnActive, action, isAI;
     Player* currentPlayer;
@@ -145,11 +116,6 @@ void runGameLoop(int startingPlayer) {
                     printBoxEmpty();
                     printBoxBottom();
                     waitForEnter();
-                    clearScreen();
-                    printBoard(g_board);
-                    break;
-                case ACTION_VIEW_STATS:
-                    displayStatistics();
                     clearScreen();
                     printBoard(g_board);
                     break;

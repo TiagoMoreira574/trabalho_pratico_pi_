@@ -25,12 +25,16 @@ void saveGame(const char* filename) {
     BuildingNode* buildingCurrent;
 
     if (file == NULL) {
-        printf("Error: Could not create save file.\n");
+        printf("Error: Could not create save file '%s'.\n", filename);
+        printf("Check if you have write permissions in this directory.\n");
         return;
     }
 
+    printf("Saving game to '%s'...\n", filename);
+
     fprintf(file, "%s\n", SAVE_MARKER_START);
     fprintf(file, "CURRENT_PLAYER %d\n", g_currentPlayerNum);
+    fprintf(file, "GAME_MODE %d\n", g_gameMode);  /* 1=PvP, 2=PvE */
 
     fprintf(file, "PLAYER1 %s %d %d %d %d %d %d\n",
         g_player1.name, g_player1.faction, g_player1.coins,
@@ -103,7 +107,13 @@ void saveGame(const char* filename) {
 
     fprintf(file, "%s\n", SAVE_MARKER_END);
     fclose(file);
-    printf("Game saved successfully.\n");
+    printf("Game saved successfully to '%s'.\n", filename);
+    printf("  - Game Mode: %s\n", g_gameMode == 1 ? "PvP" : "PvE (vs AI)");
+    printf("  - Current Player: %d\n", g_currentPlayerNum + 1);
+    printf("  - Player 1: %s (%d coins, %d buildings, %d units)\n",
+        g_player1.name, g_player1.coins, g_player1.numBuildings, g_player1.numUnits);
+    printf("  - Player 2: %s (%d coins, %d buildings, %d units)\n",
+        g_player2.name, g_player2.coins, g_player2.numBuildings, g_player2.numUnits);
 }
 
 int loadGame(const char* filename) {
@@ -133,6 +143,10 @@ int loadGame(const char* filename) {
     if (fscanf(file, " CURRENT_PLAYER %d", &g_currentPlayerNum) != 1) {
         fclose(file);
         return 0;
+    }
+
+    if (fscanf(file, " GAME_MODE %d", &g_gameMode) != 1) {
+        g_gameMode = 1;  /* Default to PvP if not found (old save files) */
     }
 
     if (fscanf(file, " PLAYER1 %49s %d %d %d %d %d %d",
@@ -242,6 +256,12 @@ int loadGame(const char* filename) {
     }
 
     fclose(file);
-    printf("Game loaded successfully.\n");
+    printf("Game loaded successfully from '%s'.\n", filename);
+    printf("  - Game Mode: %s\n", g_gameMode == 1 ? "PvP" : "PvE (vs AI)");
+    printf("  - Current Player: %d\n", g_currentPlayerNum + 1);
+    printf("  - Player 1: %s (%d coins, %d buildings, %d units)\n",
+        g_player1.name, g_player1.coins, g_player1.numBuildings, g_player1.numUnits);
+    printf("  - Player 2: %s (%d coins, %d buildings, %d units)\n",
+        g_player2.name, g_player2.coins, g_player2.numBuildings, g_player2.numUnits);
     return 1;
 }

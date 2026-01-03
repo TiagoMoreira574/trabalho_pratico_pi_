@@ -1,0 +1,41 @@
+LOTR_SAVE_START
+CURRENT_PLAYER 0
+GAME_MODE 2
+PLAYER1 Tiago 1 20 0 0 4 0
+PLAYER2 AI 2 0 14 23 2 2
+BOARD_START
+BBBMM.....................
+BBBMM.....................
+BBB.......................
+RRRMM.....................
+RRRMM.....................
+..........................
+..........................
+..........................
+..........................
+.....................s....
+......................s...
+..........................
+.....................RRR..
+.....................RRR..
+.......................BBB
+.......................BBB
+.......................BBB
+BOARD_END
+P1_BUILDINGS_START
+0 Base 3 3 0 200 B 0 0 0
+1 Mine 2 2 30 60 M 3 3 0
+1 Mine 2 2 30 60 M 0 3 0
+2 Barracks 3 2 50 100 R 3 0 0
+P1_BUILDINGS_END
+P2_BUILDINGS_START
+0 Base 3 3 0 200 B 14 23 1
+2 Barracks 3 2 50 100 R 12 21 1
+P2_BUILDINGS_END
+P1_UNITS_START
+P1_UNITS_END
+P2_UNITS_START
+0 Swordsman 15 40 1 1 20 s 9 21 1
+0 Swordsman 15 40 1 1 20 s 10 22 1
+P2_UNITS_END
+LOTR_SAVE_END

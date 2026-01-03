@@ -15,9 +15,8 @@
 #define ACTION_MOVE 3
 #define ACTION_ATTACK 4
 #define ACTION_SAVE 5
-#define ACTION_VIEW_STATS 6
-#define ACTION_END_TURN 7
-#define ACTION_QUIT 8
+#define ACTION_END_TURN 6
+#define ACTION_QUIT 7
 
 void clearInputBuffer(void);
 void waitForEnter(void);

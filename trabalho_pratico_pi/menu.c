@@ -111,37 +111,53 @@ void startNewGame(Player* player1, Player* player2, char board[ROWS][COLS]) {
     printf("\n      Player 1 Name: ");
     if (fgets(name1, sizeof(name1), stdin) != NULL) {
         name1[strcspn(name1, "\n")] = '\0';
+        /* Replace spaces with underscores for save/load compatibility */
+        for (int i = 0; name1[i]; i++) if (name1[i] == ' ') name1[i] = '_';
     }
     if (strlen(name1) == 0) strcpy(name1, "Player1");
 
     printf("      Player 2 Name: ");
     if (fgets(name2, sizeof(name2), stdin) != NULL) {
         name2[strcspn(name2, "\n")] = '\0';
+        /* Replace spaces with underscores for save/load compatibility */
+        for (int i = 0; name2[i]; i++) if (name2[i] == ' ') name2[i] = '_';
     }
     if (strlen(name2) == 0) strcpy(name2, "Player2");
 
     clearScreen();
 
-    printBoxTop();
-    printBoxEmpty();
-    printBoxCenter("C H O O S E   F A C T I O N");
-    printBoxEmpty();
-    printBoxSeparator();
-    printBoxEmpty();
-    printf("    |                       [1]  Free Peoples of Middle-Earth            |\n");
-    printBoxCenter("(Gondor, Rohan, Rivendell)");
-    printBoxEmpty();
-    printf("    |                       [2]  Forces of Mordor                        |\n");
-    printBoxCenter("(Sauron's Dark Army)");
-    printBoxEmpty();
-    printBoxBottom();
+    faction1 = 0;
+    while (faction1 != 1 && faction1 != 2) {
+        clearScreen();
 
-    printf("\n      %s, choose your faction (1-2): ", name1);
+        printBoxTop();
+        printBoxEmpty();
+        printBoxCenter("C H O O S E   F A C T I O N");
+        printBoxEmpty();
+        printBoxSeparator();
+        printBoxEmpty();
+        printf("    |                       [1]  Free Peoples of Middle-Earth            |\n");
+        printBoxCenter("(Gondor, Rohan, Rivendell)");
+        printBoxEmpty();
+        printf("    |                       [2]  Forces of Mordor                        |\n");
+        printBoxCenter("(Sauron's Dark Army)");
+        printBoxEmpty();
+        printBoxBottom();
 
-    if (scanf("%d", &faction1) != 1 || (faction1 != 1 && faction1 != 2)) {
-        faction1 = 1;
+        printf("\n      %s, choose your faction (1-2): ", name1);
+
+        if (scanf("%d", &faction1) != 1) {
+            clearInputBuffer();
+            faction1 = 0;
+        }
+        else {
+            clearInputBuffer();
+            if (faction1 != 1 && faction1 != 2) {
+                printf("\n      Invalid choice. Please select 1 or 2.\n");
+                waitForEnter();
+            }
+        }
     }
-    clearInputBuffer();
 
     faction2 = (faction1 == 1) ? 2 : 1;
 
@@ -221,36 +237,48 @@ void startNewGameVsAI(Player* player1, Player* player2, char board[ROWS][COLS]) 
     printf("\n      Your Name: ");
     if (fgets(name1, sizeof(name1), stdin) != NULL) {
         name1[strcspn(name1, "\n")] = '\0';
+        /* Replace spaces with underscores for save/load compatibility */
+        for (int i = 0; name1[i]; i++) if (name1[i] == ' ') name1[i] = '_';
     }
     if (strlen(name1) == 0) strcpy(name1, "Hero");
 
-    clearScreen();
+    faction1 = 0;
+    while (faction1 != 1 && faction1 != 2) {
+        clearScreen();
 
-    printBoxTop();
-    printBoxEmpty();
-    printBoxCenter("C H O O S E   F A C T I O N");
-    printBoxEmpty();
-    printBoxSeparator();
-    printBoxEmpty();
-    printf("    |                       [1]  Free Peoples of Middle-Earth            |\n");
-    printBoxCenter("(Gondor, Rohan, Rivendell)");
-    printBoxEmpty();
-    printf("    |                       [2]  Forces of Mordor                        |\n");
-    printBoxCenter("(Sauron's Dark Army)");
-    printBoxEmpty();
-    printBoxBottom();
+        printBoxTop();
+        printBoxEmpty();
+        printBoxCenter("C H O O S E   F A C T I O N");
+        printBoxEmpty();
+        printBoxSeparator();
+        printBoxEmpty();
+        printf("    |                       [1]  Free Peoples of Middle-Earth            |\n");
+        printBoxCenter("(Gondor, Rohan, Rivendell)");
+        printBoxEmpty();
+        printf("    |                       [2]  Forces of Mordor                        |\n");
+        printBoxCenter("(Sauron's Dark Army)");
+        printBoxEmpty();
+        printBoxBottom();
 
-    printf("\n      %s, choose your faction (1-2): ", name1);
+        printf("\n      %s, choose your faction (1-2): ", name1);
 
-    if (scanf("%d", &faction1) != 1 || (faction1 != 1 && faction1 != 2)) {
-        faction1 = 1;
+        if (scanf("%d", &faction1) != 1) {
+            clearInputBuffer();
+            faction1 = 0;
+        }
+        else {
+            clearInputBuffer();
+            if (faction1 != 1 && faction1 != 2) {
+                printf("\n      Invalid choice. Please select 1 or 2.\n");
+                waitForEnter();
+            }
+        }
     }
-    clearInputBuffer();
 
     faction2 = (faction1 == 1) ? 2 : 1;
 
     initPlayer(player1, name1, faction1, 100);
-    initPlayer(player2, "AI Commander", faction2, 100);
+    initPlayer(player2, "AI", faction2, 100);
 
     player1->baseRow = 0;
     player1->baseCol = 0;
@@ -318,9 +346,9 @@ int displayGameMenu(Player* player) {
     printBoxSeparator();
     printBoxEmpty();
     printf("    |%-68s|\n", "       [1] Build Structure             [5] Save Game");
-    printf("    |%-68s|\n", "       [2] Recruit Unit                [6] View Statistics");
-    printf("    |%-68s|\n", "       [3] Move Unit                   [7] End Turn");
-    printf("    |%-68s|\n", "       [4] Attack                      [8] Quit Game");
+    printf("    |%-68s|\n", "       [2] Recruit Unit                [6] End Turn");
+    printf("    |%-68s|\n", "       [3] Move Unit                   [7] Quit Game");
+    printf("    |%-68s|\n", "       [4] Attack");
     printBoxEmpty();
     printBoxBottom();
 

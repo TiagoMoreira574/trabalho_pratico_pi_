@@ -19,7 +19,7 @@ void initBuildingCatalog(Building catalog[NUM_BUILDING_TYPES]) {
     catalog[2].width = 3; catalog[2].height = 2; catalog[2].cost = 50;
     catalog[2].health = 100; catalog[2].symbol = 'R'; catalog[2].owner = -1;
 
-    catalog[3].type = BUILDING_ARCHERY_RANGE; strcpy(catalog[3].name, "Archery Range");
+    catalog[3].type = BUILDING_ARCHERY_RANGE; strcpy(catalog[3].name, "ArcheryRange");
     catalog[3].width = 3; catalog[3].height = 2; catalog[3].cost = 40;
     catalog[3].health = 80; catalog[3].symbol = 'A'; catalog[3].owner = -1;
 
@@ -27,7 +27,7 @@ void initBuildingCatalog(Building catalog[NUM_BUILDING_TYPES]) {
     catalog[4].width = 3; catalog[4].height = 2; catalog[4].cost = 60;
     catalog[4].health = 120; catalog[4].symbol = 'S'; catalog[4].owner = -1;
 
-    catalog[5].type = BUILDING_SIEGE_WORKSHOP; strcpy(catalog[5].name, "Siege Workshop");
+    catalog[5].type = BUILDING_SIEGE_WORKSHOP; strcpy(catalog[5].name, "SiegeWorkshop");
     catalog[5].width = 3; catalog[5].height = 2; catalog[5].cost = 70;
     catalog[5].health = 140; catalog[5].symbol = 'W'; catalog[5].owner = -1;
 }
