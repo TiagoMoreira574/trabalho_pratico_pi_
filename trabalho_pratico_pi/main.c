@@ -10,11 +10,14 @@
 #include "ai.h"
 #include "globals.h"
 
-void runGameLoop(int startingPlayer) {
-    int gameRunning = 1, turnActive, action, isAI;
-    Player* currentPlayer;
-    BuildingNode** currentPlayerBuildings;
-    UnitNode** currentPlayerUnits;
+static void runGameLoop(int startingPlayer) {
+    int gameRunning = 1;
+    int turnActive = 0;
+    int action = 0;
+    int isAI = 0;
+    Player* currentPlayer = NULL;
+    BuildingNode** currentPlayerBuildings = NULL;
+    UnitNode** currentPlayerUnits = NULL;
     char line[80];
 
     g_currentPlayerNum = startingPlayer;
@@ -106,16 +109,7 @@ void runGameLoop(int startingPlayer) {
                     printBoard(g_board);
                     break;
                 case ACTION_SAVE:
-                    saveGame(DEFAULT_SAVE_FILE);
-                    clearScreen();
-                    printBoxTop();
-                    printBoxEmpty();
-                    printBoxCenter("G A M E   S A V E D");
-                    printBoxEmpty();
-                    printBoxCenter("Your progress has been saved.");
-                    printBoxEmpty();
-                    printBoxBottom();
-                    waitForEnter();
+                    saveGameMenu();
                     clearScreen();
                     printBoard(g_board);
                     break;
@@ -207,34 +201,11 @@ int main(void) {
             break;
 
         case MENU_LOAD_GAME:
-            if (loadGame(DEFAULT_SAVE_FILE)) {
+            if (loadGameMenu()) {
                 clearScreen();
-                printBoxTop();
-                printBoxEmpty();
-                printBoxCenter("G A M E   L O A D E D");
-                printBoxEmpty();
-                printBoxSeparator();
-
-                char line[120];
-                snprintf(line, sizeof(line), "%s vs %s", g_player1.name, g_player2.name);
-                printBoxCenter(line);
-                printBoxEmpty();
-                printBoxBottom();
-
                 printBoard(g_board);
                 waitForEnter();
                 runGameLoop(g_currentPlayerNum);
-            }
-            else {
-                clearScreen();
-                printBoxTop();
-                printBoxEmpty();
-                printBoxCenter("L O A D   F A I L E D");
-                printBoxEmpty();
-                printBoxCenter("No saved game found.");
-                printBoxEmpty();
-                printBoxBottom();
-                waitForEnter();
             }
             break;
 

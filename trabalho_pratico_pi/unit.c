@@ -45,24 +45,6 @@ void initUnitRequirements(UnitRequirement requirements[NUM_UNIT_TYPES]) {
     strcpy(requirements[4].buildingName, "Siege Workshop");
 }
 
-void displayUnitCatalog(Unit catalog[NUM_UNIT_TYPES], UnitRequirement requirements[NUM_UNIT_TYPES]) {
-    int i;
-    printf("\n======================================================================================\n");
-    printf("                              UNIT CATALOG                                            \n");
-    printf("======================================================================================\n");
-    printf(" Type | Name       | Req. Building   | Cost | Health | Attack | Range | Move | Symbol\n");
-    printf("--------------------------------------------------------------------------------------\n");
-    for (i = 0; i < NUM_UNIT_TYPES; i++) {
-        printf("  %d   | %-10s | %-15s | %3d  |  %3d   |   %2d   |   %d   |   %d  |   %c\n",
-            i, catalog[i].name, requirements[i].buildingName,
-            catalog[i].cost, catalog[i].health, catalog[i].attackPower,
-            catalog[i].range, catalog[i].moveCost, catalog[i].symbol);
-    }
-    printf("======================================================================================\n");
-    printf("  -1  | Cancel                                                                        \n");
-    printf("======================================================================================\n");
-}
-
 int placeUnit(char board[ROWS][COLS], Unit* u, int row, int col) {
     if (row < 0 || row >= ROWS || col < 0 || col >= COLS) {
         printf("Invalid placement: position outside the board.\n");
@@ -151,34 +133,6 @@ void freeUnitList(UnitNode** head) {
         current = next;
     }
     *head = NULL;
-}
-
-void displayUnitList(UnitNode* head, int playerNum) {
-    UnitNode* current = head;
-    int index = 0;
-    char line[80];
-
-    printf("\n    +--------------------------------------------------------------------+\n");
-    sprintf(line, "Player %d's Units", playerNum + 1);
-    printf("    |%*s%s%*s|\n", (68 - (int)strlen(line)) / 2, "", line, (68 - (int)strlen(line) + 1) / 2, "");
-    printf("    +--------------------------------------------------------------------+\n");
-    printf("    |  #  |    Name    |  HP  | Position |  ATK  | Range | Move Cost    |\n");
-    printf("    +--------------------------------------------------------------------+\n");
-
-    if (current == NULL) {
-        printf("    |                     No units available                            |\n");
-    }
-    else {
-        while (current != NULL) {
-            printf("    |  %d  | %-10s |  %2d  |  (%2d,%2d) |  %2d   |   %d   |     %d        |\n",
-                index, current->unit.name, current->unit.health,
-                current->unit.row, current->unit.col,
-                current->unit.attackPower, current->unit.range, current->unit.moveCost);
-            index++;
-            current = current->next;
-        }
-    }
-    printf("    +--------------------------------------------------------------------+\n");
 }
 
 int findNearestFreeCell(char board[ROWS][COLS], int targetRow, int targetCol, int* foundRow, int* foundCol) {
@@ -420,47 +374,6 @@ DestroyedNode* addDestroyedEntity(DestroyedNode** head, int entityType, const ch
         current->next = newNode;
     }
     return newNode;
-}
-
-int countDestroyedEntities(DestroyedNode* head) {
-    int count = 0;
-    DestroyedNode* current = head;
-    while (current != NULL) {
-        count++;
-        current = current->next;
-    }
-    return count;
-}
-
-void displayDestroyedList(DestroyedNode* head, int playerNum) {
-    DestroyedNode* current = head;
-    int index = 0, unitsDestroyed = 0, buildingsDestroyed = 0;
-    char line[80];
-
-    sprintf(line, "Kills by Player %d", playerNum + 1);
-    printf("    |%*s%s%*s|\n", (68 - (int)strlen(line)) / 2, "", line, (68 - (int)strlen(line) + 1) / 2, "");
-    printf("    +--------------------------------------------------------------------+\n");
-
-    if (current == NULL) {
-        printf("    |                  No enemies defeated yet                          |\n");
-    }
-    else {
-        while (current != NULL) {
-            sprintf(line, "[%d] %s %s (was Player %d's) at (%d,%d)",
-                index, current->entity.entityType == DESTROYED_UNIT ? "Unit:" : "Building:",
-                current->entity.name, current->entity.originalOwner + 1,
-                current->entity.row, current->entity.col);
-            printf("    |  %-64s|\n", line);
-            if (current->entity.entityType == DESTROYED_UNIT) unitsDestroyed++;
-            else buildingsDestroyed++;
-            index++;
-            current = current->next;
-        }
-    }
-    printf("    +--------------------------------------------------------------------+\n");
-    sprintf(line, "Total: %d units, %d buildings destroyed", unitsDestroyed, buildingsDestroyed);
-    printf("    |%*s%s%*s|\n", (68 - (int)strlen(line)) / 2, "", line, (68 - (int)strlen(line) + 1) / 2, "");
-    printf("    +--------------------------------------------------------------------+\n");
 }
 
 void freeDestroyedList(DestroyedNode** head) {

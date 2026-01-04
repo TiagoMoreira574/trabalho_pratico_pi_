@@ -50,7 +50,6 @@ int selectGameMode(void) {
             }
         }
     }
-
     return choice;
 }
 
@@ -61,12 +60,13 @@ static int aiBuildPhase(char board[ROWS][COLS], Player* aiPlayer,
     Building newBuilding;
     int buildingType;
     int mineCount;
+    int built = 0;
 
     if (!hasBuildingInList(*aiBuildings, BUILDING_BARRACKS)) {
         buildingType = BUILDING_BARRACKS;
         if (aiPlayer->coins >= buildingCatalog[buildingType].cost) {
-            for (row = aiPlayer->baseRow - 3; row <= aiPlayer->baseRow + 4; row++) {
-                for (col = aiPlayer->baseCol - 5; col <= aiPlayer->baseCol + 2; col++) {
+            for (row = aiPlayer->baseRow - 3; row <= aiPlayer->baseRow + 4 && !built; row++) {
+                for (col = aiPlayer->baseCol - 5; col <= aiPlayer->baseCol + 2 && !built; col++) {
                     if (row >= 0 && col >= 0 &&
                         row + buildingCatalog[buildingType].height <= ROWS &&
                         col + buildingCatalog[buildingType].width <= COLS) {
@@ -81,46 +81,48 @@ static int aiBuildPhase(char board[ROWS][COLS], Player* aiPlayer,
                                 aiPlayer->coins -= buildingCatalog[buildingType].cost;
                                 printf("      > AI builds %s at (%d, %d) for %d coins\n",
                                     newBuilding.name, row, col, buildingCatalog[buildingType].cost);
-                                return 1;
+                                built = 1;
                             }
                         }
                     }
                 }
             }
         }
-        return 0;
+        if (!built) return 0;
     }
 
     mineCount = countBuildingTypeInList(*aiBuildings, BUILDING_MINE);
-    if (mineCount < 2) {
+    while (mineCount < 2 && aiPlayer->coins >= buildingCatalog[BUILDING_MINE].cost) {
         buildingType = BUILDING_MINE;
-        if (aiPlayer->coins >= buildingCatalog[buildingType].cost) {
-            for (row = aiPlayer->baseRow - 4; row <= aiPlayer->baseRow + 5; row++) {
-                for (col = aiPlayer->baseCol - 6; col <= aiPlayer->baseCol + 3; col++) {
-                    if (row >= 0 && col >= 0 &&
-                        row + buildingCatalog[buildingType].height <= ROWS &&
-                        col + buildingCatalog[buildingType].width <= COLS) {
-                        if (canPlaceBuilding(board, row, col,
-                            buildingCatalog[buildingType].width,
-                            buildingCatalog[buildingType].height)) {
-                            newBuilding = buildingCatalog[buildingType];
-                            newBuilding.owner = 1;
-                            if (placeBuilding(board, &newBuilding, row, col)) {
-                                addBuildingToList(aiBuildings, &newBuilding);
-                                aiPlayer->numBuildings++;
-                                aiPlayer->coins -= buildingCatalog[buildingType].cost;
-                                printf("      > AI builds %s at (%d, %d) for %d coins\n",
-                                    newBuilding.name, row, col, buildingCatalog[buildingType].cost);
-                                return 1;
-                            }
+        int minePlaced = 0;
+        for (row = aiPlayer->baseRow - 4; row <= aiPlayer->baseRow + 5 && !minePlaced; row++) {
+            for (col = aiPlayer->baseCol - 6; col <= aiPlayer->baseCol + 3 && !minePlaced; col++) {
+                if (row >= 0 && col >= 0 &&
+                    row + buildingCatalog[buildingType].height <= ROWS &&
+                    col + buildingCatalog[buildingType].width <= COLS) {
+                    if (canPlaceBuilding(board, row, col,
+                        buildingCatalog[buildingType].width,
+                        buildingCatalog[buildingType].height)) {
+                        newBuilding = buildingCatalog[buildingType];
+                        newBuilding.owner = 1;
+                        if (placeBuilding(board, &newBuilding, row, col)) {
+                            addBuildingToList(aiBuildings, &newBuilding);
+                            aiPlayer->numBuildings++;
+                            aiPlayer->coins -= buildingCatalog[buildingType].cost;
+                            printf("      > AI builds %s at (%d, %d) for %d coins\n",
+                                newBuilding.name, row, col, buildingCatalog[buildingType].cost);
+                            built = 1;
+                            minePlaced = 1;
+                            mineCount++;
                         }
                     }
                 }
             }
         }
+        if (!minePlaced) break;
     }
 
-    return 0;
+    return built;
 }
 
 static int aiRecruitPhase(char board[ROWS][COLS], Player* aiPlayer,

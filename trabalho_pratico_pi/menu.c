@@ -50,11 +50,6 @@ void printBoxCenter(const char* text) {
     printf("    |%*s%s%*s|\n", padding, "", text, padding + extra, "");
 }
 
-void printBoxLeft(const char* text) {
-    int len = strlen(text);
-    printf("    |  %s%*s|\n", text, BOX_WIDTH - 4 - len, "");
-}
-
 int displayMainMenu(void) {
     int choice;
 
@@ -136,11 +131,11 @@ void startNewGame(Player* player1, Player* player2, char board[ROWS][COLS]) {
         printBoxEmpty();
         printBoxSeparator();
         printBoxEmpty();
-        printf("    |                       [1]  Free Peoples of Middle-Earth            |\n");
-        printBoxCenter("(Gondor, Rohan, Rivendell)");
+        printf("    |                       [1]  Free Peoples                             |\n");
+        printBoxCenter("(Gondor/Rivendell)");
         printBoxEmpty();
-        printf("    |                       [2]  Forces of Mordor                        |\n");
-        printBoxCenter("(Sauron's Dark Army)");
+        printf("    |                       [2]  Mordor                                   |\n");
+        printBoxCenter("(Saurons forces)");
         printBoxEmpty();
         printBoxBottom();
 
@@ -252,11 +247,11 @@ void startNewGameVsAI(Player* player1, Player* player2, char board[ROWS][COLS]) 
         printBoxEmpty();
         printBoxSeparator();
         printBoxEmpty();
-        printf("    |                       [1]  Free Peoples of Middle-Earth            |\n");
-        printBoxCenter("(Gondor, Rohan, Rivendell)");
+        printf("    |                       [1]  Free Peoples                             |\n");
+        printBoxCenter("(Gondor/Rivendell)");
         printBoxEmpty();
-        printf("    |                       [2]  Forces of Mordor                        |\n");
-        printBoxCenter("(Sauron's Dark Army)");
+        printf("    |                       [2]  Mordor                                   |\n");
+        printBoxCenter("(Saurons forces)");
         printBoxEmpty();
         printBoxBottom();
 

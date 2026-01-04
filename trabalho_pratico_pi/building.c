@@ -32,25 +32,6 @@ void initBuildingCatalog(Building catalog[NUM_BUILDING_TYPES]) {
     catalog[5].health = 140; catalog[5].symbol = 'W'; catalog[5].owner = -1;
 }
 
-void displayBuildingCatalog(Building catalog[NUM_BUILDING_TYPES]) {
-    int i;
-    printf("\n==========================================================================\n");
-    printf("                         BUILDING CATALOG                                 \n");
-    printf("==========================================================================\n");
-    printf(" Type | Name             | Size (WxH) | Cost | Health | Symbol           \n");
-    printf("--------------------------------------------------------------------------\n");
-    for (i = 0; i < NUM_BUILDING_TYPES; i++) {
-        printf("  %d   | %-16s |    %dx%d     | %3d  |  %3d   |   %c\n",
-            i, catalog[i].name, catalog[i].width, catalog[i].height,
-            catalog[i].cost, catalog[i].health, catalog[i].symbol);
-    }
-    printf("==========================================================================\n");
-    printf(" Note: Base (type 0) is placed automatically and cannot be constructed.  \n");
-    printf("==========================================================================\n");
-    printf("  -1  | Cancel                                                            \n");
-    printf("==========================================================================\n");
-}
-
 int canPlaceBuilding(char board[ROWS][COLS], int row, int col, int width, int height) {
     int i, j;
     if (row < 0 || col < 0 || row + height > ROWS || col + width > COLS) {
